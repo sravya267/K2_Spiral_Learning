@@ -1,0 +1,205 @@
+ /* src/components/WorksheetForm.css */
+.form-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #6c5ce7;
+}
+
+.type-selector-container,
+.difficulty-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.type-selector,
+.difficulty-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 50px;
+  border: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.type-selector:hover,
+.difficulty-option:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.type-selector.selected,
+.difficulty-option.selected {
+  background-color: #e9d8fd;
+  color: #6c5ce7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-color: #6c5ce7;
+}
+
+.type-selector input,
+.difficulty-option input {
+  position: absolute;
+  opacity: 0;
+}
+
+.selector-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #e9d8fd;
+  border-radius: 50%;
+  margin-right: 8px;
+  font-size: 14px;
+  color: #6c5ce7;
+}
+
+.type-selector.selected .selector-icon,
+.difficulty-option.selected .selector-icon {
+  background-color: #d4bffc;
+}
+
+.selector-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.mode-info {
+  background-color: #f0f7ff;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 0.8rem;
+  border-left: 4px solid #6c5ce7;
+  margin-top: 10px;
+}
+
+.concept-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.select-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.select-btn {
+  background: linear-gradient(135deg, #6c5ce7 0%, #8e44ad 100%);
+  color: white;
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.select-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  border-radius: 0 0 8px 8px;
+  margin: 0 -20px -20px -20px;
+}
+
+.generate-btn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #6c5ce7 0%, #8e44ad 100%);
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  color: white;
+  border-radius: 50px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.generate-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.generate-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-icon {
+  margin-right: 8px;
+}
+
+.option-toggle {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.option-toggle input {
+  margin-right: 8px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Add these new styles */
+.worksheet-type-step {
+  width: 100%;
+}
+
+/* Add to WorksheetForm.css */
+.difficulty-type-step {
+  width: 100%;
+}
+
+/* Override any conflicting styles */
+.step-content {
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .type-selector-container,
+  .difficulty-selector {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
+}

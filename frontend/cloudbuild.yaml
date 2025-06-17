@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', 
+         '--build-arg', 'REACT_APP_API_URL=https://k2-spiral-backend-nvqghqxo2a-uc.a.run.app',
+         '-t', 'gcr.io/proven-airship-284111/k2-spiral-frontend', '.']
+images:
+- 'gcr.io/proven-airship-284111/k2-spiral-frontend'

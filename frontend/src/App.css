@@ -1,0 +1,991 @@
+/* App.css - Sunshine Theme for Math Worksheet Generator */
+
+:root {
+  --primary: #ff9500;
+  --primary-dark: #e67e00;
+  --primary-light: #ffb64c;
+  --primary-bg: #fff8eb;
+  --secondary: #ffd166;
+  --white: #ffffff;
+  --light: #fafafa;
+  --dark: #333333;
+  --gray: #6b7280;
+  --light-gray: #e5e7eb;
+  --body-bg: #fffaf0;
+  --text-color: #333333;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(255, 149, 0, 0.1);
+  --hover-shadow: 0 8px 20px rgba(255, 149, 0, 0.15);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--body-bg);
+  color: var(--text-color);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.worksheet-generator {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 0;
+}
+
+/* Container for the main content */
+.container {
+  width: 90%;
+  max-width: 1140px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2; /* Above the background animations */
+  padding: 0 20px; /* Add padding for the edge animations */
+}
+
+/* Animated Background */
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none; /* Allows clicking through to elements below */
+}
+
+/* Sun and rays */
+.sun {
+  position: absolute;
+  top: -150px;
+  right: -150px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #ffe121 0%, #ffb300 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 60px rgba(255, 179, 0, 0.5);
+}
+
+.ray {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba(255, 227, 69, 0.6) 0%, rgba(255, 227, 69, 0) 100%);
+  width: 4px;
+  transform-origin: top right;
+}
+
+.ray-1 { height: 300px; transform: rotate(20deg); opacity: 0.7; animation: pulse 4s infinite alternate; }
+.ray-2 { height: 400px; transform: rotate(40deg); opacity: 0.4; animation: pulse 5s infinite alternate; }
+.ray-3 { height: 500px; transform: rotate(60deg); opacity: 0.6; animation: pulse 4.5s infinite alternate; }
+.ray-4 { height: 600px; transform: rotate(80deg); opacity: 0.4; animation: pulse 3.5s infinite alternate; }
+.ray-5 { height: 550px; transform: rotate(100deg); opacity: 0.3; animation: pulse 5.5s infinite alternate; }
+.ray-6 { height: 450px; transform: rotate(120deg); opacity: 0.5; animation: pulse 4s infinite alternate; }
+.ray-7 { height: 350px; transform: rotate(140deg); opacity: 0.6; animation: pulse 3s infinite alternate; }
+.ray-8 { height: 250px; transform: rotate(160deg); opacity: 0.3; animation: pulse 6s infinite alternate; }
+
+@keyframes pulse {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.7; }
+}
+
+/* Paper Airplanes */
+.paper-plane {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  animation: fly-around 20s infinite linear;
+  z-index: 10;
+}
+
+.plane-1 {
+  top: 15%;
+  left: -50px;
+  animation-duration: 25s;
+  animation-delay: 0s;
+}
+
+.plane-2 {
+  top: 60%;
+  right: -50px;
+  animation-duration: 30s;
+  animation-delay: 5s;
+  transform: scale(-1, 1) rotate(15deg);
+}
+
+.plane-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.plane-body:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 20px solid white;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
+}
+
+.plane-body:after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 15px;
+  width: 15px;
+  height: 10px;
+  background: rgba(229, 231, 235, 0.8);
+  transform: rotate(45deg);
+}
+
+@keyframes fly-around {
+  0% { transform: translate(-50px, 50px) rotate(0deg); }
+  25% { transform: translate(calc(100vw + 50px), 150px) rotate(5deg); }
+  50% { transform: translate(calc(100vw - 100px), calc(100vh - 100px)) rotate(-5deg); }
+  75% { transform: translate(100px, calc(100vh + 50px)) rotate(3deg); }
+  100% { transform: translate(-50px, 50px) rotate(0deg); }
+}
+
+/* Floating Math Symbols */
+.math-symbol {
+  position: absolute;
+  font-size: 36px;
+  font-weight: bold;
+  color: rgba(255, 149, 0, 0.3); /* Increase opacity for better visibility */
+  animation: float 20s infinite ease-in-out;
+  z-index: 10;
+}
+
+.symbol-plus {
+  top: 5%;
+  left: 5%;
+  font-size: 42px;
+  animation-duration: 17s;
+}
+
+.symbol-minus {
+  top: 85%;
+  left: 7%;
+  font-size: 48px;
+  animation-duration: 22s;
+}
+
+.symbol-multiply {
+  top: 75%;
+  left: 90%;
+  font-size: 42px;
+  animation-duration: 19s;
+}
+
+.symbol-divide {
+  top: 10%;
+  left: 90%;
+  font-size: 44px;
+  animation-duration: 24s;
+}
+
+.symbol-equals {
+  top: 90%;
+  left: 60%;
+  font-size: 38px;
+  animation-duration: 21s;
+}
+
+.symbol-percent {
+  top: 5%;
+  left: 35%;
+  font-size: 32px;
+  animation-duration: 18s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(20px, -20px) rotate(10deg); }
+  50% { transform: translate(40px, 0) rotate(0deg); }
+  75% { transform: translate(20px, 20px) rotate(-10deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Kid's Handwriting */
+.handwriting {
+  position: absolute;
+  font-family: 'Comic Sans MS', cursive;
+  color: rgba(107, 114, 128, 0.6); /* Increase opacity */
+  transform: rotate(-3deg);
+  animation: drift 20s infinite alternate ease-in-out;
+  z-index: 10;
+}
+
+.hw-1 {
+  top: 5%;
+  right: 10%;
+  font-size: 28px;
+  animation-duration: 23s;
+}
+
+.hw-2 {
+  bottom: 5%;
+  left: 15%;
+  font-size: 24px;
+  animation-duration: 19s;
+  transform: rotate(5deg);
+}
+
+.hw-3 {
+  top: 20%;
+  left: 3%;
+  font-size: 22px;
+  animation-duration: 21s;
+  transform: rotate(-7deg);
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0) rotate(-3deg); }
+  100% { transform: translate(30px, 20px) rotate(3deg); }
+}
+
+/* Simple Pencil */
+.pencil {
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  width: 15px;
+  height: 100px;
+  animation: pencil-float 15s infinite alternate ease-in-out;
+  z-index: 10;
+}
+
+.pencil-body {
+  width: 100%;
+  height: 80%;
+  background-color: #ffcf96;
+  position: relative;
+}
+
+.pencil-tip {
+  width: 0;
+  height: 0;
+  border-left: 7.5px solid transparent;
+  border-right: 7.5px solid transparent;
+  border-top: 15px solid #333333;
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+}
+
+.pencil-eraser {
+  width: 100%;
+  height: 20%;
+  background-color: #ff9500;
+  position: absolute;
+  top: -20%;
+  left: 0;
+  border-radius: 2px 2px 0 0;
+}
+
+@keyframes pencil-float {
+  0% { transform: translate(0, 0) rotate(-25deg); }
+  50% { transform: translate(-20px, -30px) rotate(-35deg); }
+  100% { transform: translate(20px, -15px) rotate(-15deg); }
+}
+
+/* Simple Calculator */
+.calculator {
+  position: absolute;
+  bottom: 15%;
+  left: 3%;
+  width: 50px;
+  height: 70px;
+  background-color: #e5e7eb;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: calc-float 18s infinite alternate ease-in-out;
+  z-index: 10;
+}
+
+.calc-screen {
+  width: 80%;
+  height: 15px;
+  margin: 5px auto;
+  background-color: white;
+  border-radius: 2px;
+}
+
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 5px;
+  padding: 5px;
+}
+
+.calc-buttons:before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  top: 30px;
+  left: 10px;
+}
+
+.calc-buttons:after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  top: 30px;
+  right: 10px;
+}
+
+@keyframes calc-float {
+  0% { transform: translate(0, 0) rotate(5deg); }
+  50% { transform: translate(15px, -25px) rotate(-5deg); }
+  100% { transform: translate(-15px, -10px) rotate(10deg); }
+}
+
+/* Header Styles */
+.header-container {
+  padding: 40px 0;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px; /* Give some space at the edges */
+  margin: 0 auto 30px auto;
+}
+
+.main-title {
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 2;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 15px;
+  font-weight: 500;
+  position: relative;
+  z-index: 2;
+}
+
+.description {
+  color: var(--gray);
+  font-size: 1.1rem;
+  max-width: 600px;
+  position: relative;
+  z-index: 2;
+}
+
+.k2-badge {
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-left: 12px;
+  vertical-align: middle;
+  position: relative;
+  top: -5px;
+}
+
+.header-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Banner Flying Objects */
+.banner-objects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.banner-object {
+  position: absolute;
+  font-size: 30px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.2);
+  animation: float-banner 10s infinite ease-in-out;
+}
+
+.banner-object.symbol-plus {
+  top: 15%;
+  left: 10%;
+  animation-duration: 8s;
+}
+
+.banner-object.symbol-minus {
+  top: 60%;
+  left: 80%;
+  animation-duration: 9s;
+}
+
+.banner-object.symbol-multiply {
+  top: 70%;
+  left: 30%;
+  animation-duration: 10s;
+}
+
+.banner-object.symbol-divide {
+  top: 20%;
+  left: 70%;
+  animation-duration: 11s;
+}
+
+.banner-object.symbol-equals {
+  top: 40%;
+  left: 20%;
+  animation-duration: 9s;
+}
+
+.banner-object.symbol-percent {
+  top: 50%;
+  left: 90%;
+  animation-duration: 10s;
+}
+
+@keyframes float-banner {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(15px, -15px) rotate(10deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Stick Figure Container */
+.stick-figure-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  background-color: var(--primary-bg);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(255, 149, 0, 0.2);
+}
+
+.stick-figure {
+  position: absolute;
+  width: 40px;
+  height: 80px;
+}
+
+.sf-1 {
+  left: 30%;
+  top: 25%;
+}
+
+.sf-2 {
+  right: 30%;
+  top: 25%;
+}
+
+.stick-figure .head {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.stick-figure .body {
+  width: 4px;
+  height: 30px;
+  background-color: #333;
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.stick-figure .arm {
+  width: 4px;
+  height: 20px;
+  background-color: #333;
+  position: absolute;
+  top: 35px;
+}
+
+.stick-figure .arm.left {
+  transform: rotate(45deg);
+  left: 10px;
+}
+
+.stick-figure .arm.right {
+  transform: rotate(-45deg);
+  right: 10px;
+}
+
+.stick-figure .arm.up {
+  transform: rotate(-135deg);
+  top: 35px;
+}
+
+.stick-figure .arm.left.up {
+  transform: rotate(135deg);
+  top: 35px;
+}
+
+.stick-figure .leg {
+  width: 4px;
+  height: 25px;
+  background-color: #333;
+  position: absolute;
+  top: 60px;
+}
+
+.stick-figure .leg.left {
+  transform: rotate(15deg);
+  left: 15px;
+}
+
+.stick-figure .leg.right {
+  transform: rotate(-15deg);
+  right: 15px;
+}
+
+.stick-figure .leg.jump {
+  height: 20px;
+  transform: rotate(-25deg);
+}
+
+.stick-figure:nth-child(1) {
+  animation: wiggle 3s infinite alternate;
+}
+
+.stick-figure:nth-child(2) {
+  animation: jump 2s infinite alternate;
+}
+
+@keyframes wiggle {
+  0% { transform: rotate(-5deg); }
+  100% { transform: rotate(5deg); }
+}
+
+@keyframes jump {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+.math-symbol.ms-1 {
+  position: absolute;
+  font-size: 20px;
+  color: var(--primary);
+  top: 30%;
+  left: 30%;
+  animation: float-symbol 4s infinite alternate;
+}
+
+.math-symbol.ms-2 {
+  position: absolute;
+  font-size: 20px;
+  color: var(--primary);
+  top: 60%;
+  right: 40%;
+  animation: float-symbol 3s infinite alternate;
+}
+
+.math-symbol.ms-3 {
+  position: absolute;
+  font-size: 20px;
+  color: var(--primary);
+  bottom: 30%;
+  right: 30%;
+  animation: float-symbol 5s infinite alternate;
+}
+
+.math-symbol.ms-4 {
+  position: absolute;
+  font-size: 20px;
+  color: var(--primary);
+  top: 20%;
+  right: 20%;
+  animation: float-symbol 4.5s infinite alternate;
+}
+
+@keyframes float-symbol {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(5px, -5px); }
+}
+
+/* Form Card */
+.form-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  border: none;
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin: 40px auto;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 900px; /* Give some space at the edges */
+}
+
+.form-card:hover {
+  box-shadow: var(--hover-shadow);
+  transform: translateY(-4px);
+}
+
+/* Form Steps */
+.form-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px 20px;
+}
+
+.step {
+  display: flex;
+  gap: 15px;
+}
+
+.step-number {
+  background-color: var(--primary);
+  color: white;
+  font-weight: bold;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex-grow: 1;
+}
+
+.step-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--dark);
+}
+
+/* Worksheet Type Cards */
+.worksheet-type-card, .difficulty-card {
+  border: 2px solid var(--light-gray);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.worksheet-type-card:hover, .difficulty-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-light);
+}
+
+.worksheet-type-card.selected, .difficulty-card.selected {
+  border-color: var(--primary);
+  box-shadow: 0 5px 1px rgba(255, 149, 0, 0.2);
+  background-color: var(--primary-bg);
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--primary-bg);
+  color: var(--primary);
+  font-size: 20px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.selected .card-icon {
+  background-color: var(--primary);
+  color: white;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--dark);
+}
+
+.selected-checkmark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: var(--primary);
+  font-size: 20px;
+}
+
+/* Worksheet Visual */
+.worksheet-visual {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: var(--white);
+  border-radius: 6px;
+  border: 1px solid var(--light-gray);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.visual-item {
+  flex: 1;
+  min-width: 40px;
+  text-align: center;
+  color: var(--primary);
+  font-size: 14px;
+}
+
+/* Info Box */
+.info-box {
+  display: flex;
+  align-items: center;
+  background-color: var(--primary-bg);
+  border-radius: var(--border-radius);
+  padding: 12px 15px;
+  margin-top: 15px;
+  border-left: 4px solid var(--primary);
+}
+
+.info-icon {
+  color: var(--primary);
+  font-size: 18px;
+  margin-right: 12px;
+}
+
+.info-text {
+  color: var(--dark);
+  font-size: 0.9rem;
+}
+
+/* Concept Chips */
+.concept-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.concept-grid {
+  margin-bottom: 20px;
+}
+
+.concept-chip {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 100px;
+  background-color: var(--white);
+  border: 2px solid var(--light-gray);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  height: 100%;
+}
+
+.concept-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary-light);
+}
+
+.concept-chip.selected {
+  background-color: var(--primary-bg);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.15);
+}
+
+.concept-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-right: 10px;
+  color: var(--primary);
+  min-width: 20px;
+}
+
+.concept-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.concept-check {
+  margin-left: 10px;
+  color: var(--primary);
+  font-size: 14px;
+}
+
+/* Form Footer */
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--light);
+  padding: 20px;
+  border-top: 1px solid var(--light-gray);
+  margin-top: 20px;
+}
+
+/* Generate Button */
+.generate-btn {
+  background-color: var(--primary);
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 100px;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 149, 0, 0.25);
+}
+
+.generate-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 149, 0, 0.35);
+}
+
+.generate-btn:active {
+  transform: translateY(0);
+}
+
+.generate-btn:disabled {
+  background-color: var(--light-gray);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 25px;
+  padding: 15px 0;
+  color: var(--gray);
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px; /* Give some space at the edges */
+  margin: 25px auto 0 auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .form-footer {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .generate-btn {
+    width: 100%;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .stick-figure-container {
+    margin-top: 30px;
+  }
+  
+  /* Ensure animations are still visible on mobile */
+  .math-symbol {
+    font-size: 28px; /* Slightly smaller on mobile but still visible */
+  }
+  
+  .handwriting {
+    font-size: 18px; /* Slightly smaller on mobile */
+  }
+  
+  /* Position some elements closer to edges on mobile */
+  .symbol-plus {
+    top: 2%;
+    left: 2%;
+  }
+  
+  .symbol-minus {
+    bottom: 2%;
+    left: 2%;
+  }
+  
+  .symbol-multiply {
+    top: 2%;
+    right: 2%;
+  }
+  
+  .symbol-divide {
+    bottom: 2%;
+    right: 2%;
+  }
+  
+  /* Increase container padding to make space for animations */
+  .container {
+    padding: 0 30px;
+    width: 100%;
+  }
+}
+
+/* Spinner for loading states */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.2em;
+}
+
+/* Utility for hiding elements visually but keeping them accessible */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Bootstrap compatibility fixes */
+.me-1 { margin-right: 0.25rem !important; }
+.me-2 { margin-right: 0.5rem !important; }
+.g-2 { gap: 0.5rem !important; }
+.g-3 { gap: 0.75rem !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.text-md-end { text-align: right !important; }
+.text-warning { color: #ffc107 !important; }
+.select-btn { margin-left: 0.5rem; }

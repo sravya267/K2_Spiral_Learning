@@ -1,0 +1,301 @@
+/* AnimatedBackground.css */
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Send it behind the content */
+  pointer-events: none; /* Allows clicks to pass through */
+  overflow: visible; /* Allow elements to overflow */
+}
+
+/* Sun and rays */
+.sun {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 60px;
+  height: 60px;
+  background-color: #FFD700;
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+  opacity: 0.8;
+  z-index: 10; /* Higher z-index */
+}
+
+.ray {
+  position: absolute;
+  background-color: #FFD700;
+  height: 3px;
+  width: 40px;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+  opacity: 0.8;
+  z-index: 10;
+}
+
+.ray-1 { transform: rotate(0deg); }
+.ray-2 { transform: rotate(45deg); }
+.ray-3 { transform: rotate(90deg); }
+.ray-4 { transform: rotate(135deg); }
+.ray-5 { transform: rotate(180deg); }
+.ray-6 { transform: rotate(225deg); }
+.ray-7 { transform: rotate(270deg); }
+.ray-8 { transform: rotate(315deg); }
+
+/* Paper Airplanes - Position outside content areas */
+.paper-plane {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  opacity: 0.8;
+  z-index: 100; /* Very high z-index to stay on top */
+}
+
+.plane-1 {
+  top: 15%;
+  left: 5%;
+  animation: flyAcrossScreen 30s linear infinite;
+}
+
+.plane-2 {
+  top: 75%;
+  right: 5%;
+  animation: flyAcrossScreenReverse 25s linear infinite;
+}
+
+.plane-body {
+  width: 100%;
+  height: 100%;
+  background-color: #f8f9fa;
+  clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Floating Math Symbols - Position at edges */
+.math-symbol {
+  position: absolute;
+  font-size: 32px;
+  font-weight: bold;
+  color: rgba(108, 92, 231, 0.6); /* More visible purple */
+  animation: floatAroundEdges 15s ease-in-out infinite;
+  z-index: 50; /* Higher z-index */
+}
+
+.symbol-plus {
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.symbol-minus {
+  top: 85%;
+  left: 8%;
+  animation-delay: 2s;
+}
+
+.symbol-multiply {
+  top: 20%;
+  right: 5%;
+  animation-delay: 4s;
+}
+
+.symbol-divide {
+  top: 80%;
+  right: 8%;
+  animation-delay: 6s;
+}
+
+.symbol-equals {
+  top: 5%;
+  left: 40%;
+  animation-delay: 8s;
+}
+
+.symbol-percent {
+  top: 90%;
+  right: 40%;
+  animation-delay: 10s;
+}
+
+/* Kid's Handwriting - Position at edges */
+.handwriting {
+  position: absolute;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.5); /* More visible */
+  transform: rotate(-5deg);
+  z-index: 40;
+}
+
+.hw-1 {
+  top: 5%;
+  left: 70%;
+  animation: bobbleAtEdges 12s ease-in-out infinite;
+}
+
+.hw-2 {
+  bottom: 10%;
+  left: 20%;
+  animation: bobbleAtEdges 12s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.hw-3 {
+  top: 35%;
+  right: 5%;
+  animation: bobbleAtEdges 12s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+/* Simple Pencil - Position at bottom edge */
+.pencil {
+  position: absolute;
+  bottom: 5%;
+  right: 15%;
+  width: 60px;
+  height: 10px;
+  transform: rotate(30deg);
+  animation: pencilMoveEdge 20s ease-in-out infinite;
+  z-index: 60;
+}
+
+.pencil-body {
+  position: absolute;
+  width: 80%;
+  height: 100%;
+  background-color: #f9ca24;
+  border-radius: 2px;
+}
+
+.pencil-tip {
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 10px solid #444;
+}
+
+.pencil-eraser {
+  position: absolute;
+  right: 0;
+  width: 12px;
+  height: 10px;
+  background-color: #e74c3c;
+  border-radius: 2px;
+}
+
+/* Simple Calculator - Position at side edge */
+.calculator {
+  position: absolute;
+  top: 65%;
+  left: 5%;
+  width: 40px;
+  height: 50px;
+  background-color: #ddd;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  animation: calculatorFloatEdge 18s ease-in-out infinite;
+  z-index: 55;
+}
+
+.calc-screen {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 20%;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+}
+
+.calc-buttons {
+  position: absolute;
+  top: 35%;
+  left: 10%;
+  width: 80%;
+  height: 55%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2px;
+}
+
+/* New animations that keep elements at the edges */
+@keyframes floatAroundEdges {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(10deg);
+  }
+}
+
+@keyframes bobbleAtEdges {
+  0%, 100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(5deg);
+  }
+}
+
+@keyframes flyAcrossScreen {
+  0% {
+    transform: translate(-50px, 50px) rotate(0deg);
+  }
+  100% {
+    transform: translate(calc(100vw + 50px), calc(100vh - 100px)) rotate(20deg);
+  }
+}
+
+@keyframes flyAcrossScreenReverse {
+  0% {
+    transform: translate(calc(100vw + 50px), 50px) rotate(180deg);
+  }
+  100% {
+    transform: translate(-50px, calc(100vh - 100px)) rotate(160deg);
+  }
+}
+
+@keyframes pencilMoveEdge {
+  0%, 100% {
+    transform: translateX(0) rotate(30deg);
+  }
+  25% {
+    transform: translateX(-40px) rotate(25deg);
+  }
+  50% {
+    transform: translateX(-20px) rotate(35deg);
+  }
+  75% {
+    transform: translateX(-50px) rotate(20deg);
+  }
+}
+
+@keyframes calculatorFloatEdge {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(-20px, -15px) rotate(-10deg);
+  }
+  66% {
+    transform: translate(20px, -25px) rotate(10deg);
+  }
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .math-symbol {
+    font-size: 24px; /* Slightly larger for better visibility on mobile */
+  }
+  
+  .paper-plane {
+    width: 30px;
+    height: 15px;
+  }
+}

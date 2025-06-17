@@ -1,0 +1,43 @@
+/* Header.css */
+.header-container {
+    padding: 0.75rem 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .main-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .k2-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    display: inline-block;
+  }
+  
+  .subtitle {
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+  }
+  
+  .header-image {
+    max-height: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  @media (max-width: 768px) {
+    .header-container {
+      padding: 0.5rem 0;
+    }
+    
+    .main-title {
+      font-size: 1.25rem;
+    }
+  }

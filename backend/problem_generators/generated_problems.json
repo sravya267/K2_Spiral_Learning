@@ -1,0 +1,522 @@
+[
+  {
+    "first_number": 2,
+    "second_number": 0,
+    "answer": "2",
+    "type": "addition",
+    "display_type": "vertical",
+    "category": "addition",
+    "subcategory": "add_zero"
+  },
+  {
+    "first_number": 3,
+    "second_number": 1,
+    "answer": "4",
+    "type": "addition",
+    "display_type": "vertical",
+    "category": "addition",
+    "subcategory": "add_one"
+  },
+  {
+    "first_number": 8,
+    "second_number": 8,
+    "answer": "16",
+    "type": "addition",
+    "display_type": "vertical",
+    "category": "addition",
+    "subcategory": "same_number_addition"
+  },
+  {
+    "first_number": 7,
+    "second_number": 8,
+    "answer": "15",
+    "type": "addition",
+    "display_type": "vertical",
+    "category": "addition",
+    "subcategory": "near_doubles"
+  },
+  {
+    "first_number": 6,
+    "second_number": 0,
+    "answer": "6",
+    "type": "subtraction",
+    "display_type": "vertical",
+    "category": "subtraction",
+    "subcategory": "subtract_zero"
+  },
+  {
+    "first_number": 3,
+    "second_number": 1,
+    "answer": "2",
+    "type": "subtraction",
+    "display_type": "vertical",
+    "category": "subtraction",
+    "subcategory": "subtract_one"
+  },
+  {
+    "first_number": 4,
+    "second_number": 4,
+    "answer": "0",
+    "type": "subtraction",
+    "display_type": "vertical",
+    "category": "subtraction",
+    "subcategory": "same_number_subtraction"
+  },
+  {
+    "first_number": 8,
+    "second_number": 7,
+    "answer": "1",
+    "type": "subtraction",
+    "display_type": "vertical",
+    "category": "subtraction",
+    "subcategory": "near_doubles_subtraction"
+  },
+  {
+    "numbers": [
+      5,
+      14,
+      9
+    ],
+    "answer": "5, 9, 14",
+    "type": "ordering",
+    "display_type": "list",
+    "category": "number_sense",
+    "subcategory": "subitizing"
+  },
+  {
+    "first_number": 7,
+    "second_number": 20,
+    "answer": "<",
+    "type": "comparison",
+    "display_type": "horizontal",
+    "category": "number_sense",
+    "subcategory": "comparison"
+  },
+  {
+    "numbers": [
+      17,
+      0,
+      12
+    ],
+    "answer": "0, 12, 17",
+    "type": "ordering",
+    "display_type": "list",
+    "category": "number_sense",
+    "subcategory": "ordering"
+  },
+  {
+    "number": 16,
+    "question_type": "before",
+    "answer": "15",
+    "type": "before_after",
+    "display_type": "number_line",
+    "category": "number_sense",
+    "subcategory": "before_after"
+  },
+  {
+    "sequence": [
+      0,
+      1,
+      2,
+      3,
+      null
+    ],
+    "answer": "4",
+    "type": "missing_numbers",
+    "display_type": "sequence",
+    "category": "number_sense",
+    "subcategory": "missing_numbers"
+  },
+  {
+    "hour": 3,
+    "minute": 0,
+    "answer": "3:00",
+    "type": "whole_hours",
+    "display_type": "clock",
+    "category": "time_telling",
+    "subcategory": "whole_hours"
+  },
+  {
+    "hour": 9,
+    "minute": 0,
+    "answer": "9:00",
+    "type": "whole_hours",
+    "display_type": "clock",
+    "category": "time_telling",
+    "subcategory": "half_hours"
+  },
+  {
+    "hour": 12,
+    "minute": 0,
+    "answer": "12:00",
+    "type": "whole_hours",
+    "display_type": "clock",
+    "category": "time_telling",
+    "subcategory": "quarter_hours"
+  },
+  {
+    "hour": 7,
+    "minute": 0,
+    "answer": "7:00",
+    "type": "whole_hours",
+    "display_type": "clock",
+    "category": "time_telling",
+    "subcategory": "five_minute_increments"
+  },
+  {
+    "coin_type": "quarter",
+    "answer": "quarter",
+    "type": "identifying_coins",
+    "display_type": "image",
+    "category": "money_counting",
+    "subcategory": "identifying_coins"
+  },
+  {
+    "coin_type": "nickel",
+    "count": 5,
+    "total_value": 25,
+    "answer": "25 cents",
+    "type": "counting_pennies_nickels",
+    "display_type": "coins",
+    "category": "money_counting",
+    "subcategory": "counting_pennies_nickels"
+  },
+  {
+    "coin_type": "nickel",
+    "answer": "nickel",
+    "type": "identifying_coins",
+    "display_type": "image",
+    "category": "money_counting",
+    "subcategory": "mixed_coins"
+  },
+  {
+    "coin_type": "nickel",
+    "answer": "nickel",
+    "type": "identifying_coins",
+    "display_type": "image",
+    "category": "money_counting",
+    "subcategory": "making_change"
+  },
+  {
+    "number": 62,
+    "place": "tens",
+    "answer": "6",
+    "type": "ones_tens",
+    "display_type": "place_value_blocks",
+    "category": "place_value",
+    "subcategory": "ones_tens"
+  },
+  {
+    "number": 49,
+    "place": "tens",
+    "answer": "4",
+    "type": "ones_tens",
+    "display_type": "place_value_blocks",
+    "category": "place_value",
+    "subcategory": "ones_tens_hundreds"
+  },
+  {
+    "number": 25,
+    "place": "tens",
+    "answer": "2",
+    "type": "ones_tens",
+    "display_type": "place_value_blocks",
+    "category": "place_value",
+    "subcategory": "expanded_form"
+  },
+  {
+    "text": "Quinn has 9 apples. Quinn gives 8 apples to Sam. How many apples does Quinn have left?",
+    "answer": "1",
+    "type": "one_step",
+    "display_type": "text",
+    "category": "word_problems",
+    "subcategory": "one_step"
+  },
+  {
+    "text": "Jamie has 6 apples. Jamie gives 1 apples to Morgan. How many apples does Jamie have left?",
+    "answer": "5",
+    "type": "one_step",
+    "display_type": "text",
+    "category": "word_problems",
+    "subcategory": "two_step"
+  },
+  {
+    "text": "Avery has 4 marbles. Taylor gives Avery 1 more marbles. How many marbles does Avery have now?",
+    "answer": "5",
+    "type": "one_step",
+    "display_type": "text",
+    "category": "word_problems",
+    "subcategory": "multi_step"
+  },
+  {
+    "shape_name": "sphere",
+    "shape_type": "3d",
+    "properties": {
+      "faces": 1,
+      "edges": 0,
+      "vertices": 0
+    },
+    "answer": "sphere",
+    "type": "basic_2d_3d",
+    "display_type": "shape",
+    "category": "shapes",
+    "subcategory": "basic_2d_3d"
+  },
+  {
+    "shape_name": "cube",
+    "shape_type": "3d",
+    "properties": {
+      "faces": 6,
+      "edges": 12,
+      "vertices": 8
+    },
+    "answer": "cube",
+    "type": "basic_2d_3d",
+    "display_type": "shape",
+    "category": "shapes",
+    "subcategory": "edges_faces_vertices"
+  },
+  {
+    "sequence": [
+      6,
+      null,
+      8,
+      9,
+      10,
+      11
+    ],
+    "skip_value": 1,
+    "answer": "7",
+    "type": "by_ones_twos",
+    "display_type": "sequence",
+    "category": "skip_counting",
+    "subcategory": "by_ones_twos"
+  },
+  {
+    "sequence": [
+      8,
+      9,
+      null,
+      11,
+      12,
+      13
+    ],
+    "skip_value": 1,
+    "answer": "10",
+    "type": "by_ones_twos",
+    "display_type": "sequence",
+    "category": "skip_counting",
+    "subcategory": "by_fives_tens"
+  },
+  {
+    "sequence": [
+      1,
+      null,
+      3,
+      4,
+      5,
+      6
+    ],
+    "skip_value": 1,
+    "answer": "2",
+    "type": "by_ones_twos",
+    "display_type": "sequence",
+    "category": "skip_counting",
+    "subcategory": "by_hundreds"
+  },
+  {
+    "shape": "rectangle",
+    "fraction": "1",
+    "shaded_parts": 1,
+    "total_parts": 1,
+    "answer": "1",
+    "type": "halves_wholes",
+    "display_type": "fraction",
+    "category": "fractions",
+    "subcategory": "halves_wholes"
+  },
+  {
+    "shape": "square",
+    "fraction": "1",
+    "shaded_parts": 1,
+    "total_parts": 1,
+    "answer": "1",
+    "type": "halves_wholes",
+    "display_type": "fraction",
+    "category": "fractions",
+    "subcategory": "thirds_fourths"
+  },
+  {
+    "shape": "square",
+    "fraction": "1",
+    "shaded_parts": 1,
+    "total_parts": 1,
+    "answer": "1",
+    "type": "halves_wholes",
+    "display_type": "fraction",
+    "category": "fractions",
+    "subcategory": "comparing_fractions"
+  },
+  {
+    "object1": "tree",
+    "object2": "flower",
+    "property": "height",
+    "question_type": "comparison",
+    "answer": "flower is heighter",
+    "type": "comparing_objects",
+    "display_type": "comparison",
+    "category": "measurement",
+    "subcategory": "comparing_objects"
+  },
+  {
+    "object1": "elephant",
+    "object2": "cat",
+    "property": "size",
+    "question_type": "comparison",
+    "answer": "elephant is sizeer",
+    "type": "comparing_objects",
+    "display_type": "comparison",
+    "category": "measurement",
+    "subcategory": "non_standard_units"
+  },
+  {
+    "object1": "tree",
+    "object2": "bush",
+    "property": "height",
+    "question_type": "comparison",
+    "answer": "tree is heighter",
+    "type": "comparing_objects",
+    "display_type": "comparison",
+    "category": "measurement",
+    "subcategory": "rulers_inches_cm"
+  },
+  {
+    "pattern": [
+      "red",
+      "blue",
+      "red",
+      "blue",
+      "red"
+    ],
+    "element_type": "colors",
+    "answer": "blue",
+    "type": "abab_patterns",
+    "display_type": "pattern",
+    "category": "patterns",
+    "subcategory": "abab_patterns"
+  },
+  {
+    "pattern": [
+      "1",
+      "2",
+      "1",
+      "2",
+      "1"
+    ],
+    "element_type": "numbers",
+    "answer": "2",
+    "type": "abab_patterns",
+    "display_type": "pattern",
+    "category": "patterns",
+    "subcategory": "extending_patterns"
+  },
+  {
+    "pattern": [
+      "red",
+      "blue",
+      "red",
+      "blue",
+      "red"
+    ],
+    "element_type": "colors",
+    "answer": "blue",
+    "type": "abab_patterns",
+    "display_type": "pattern",
+    "category": "patterns",
+    "subcategory": "creating_patterns"
+  },
+  {
+    "category": "graphing",
+    "items": [
+      "Soccer",
+      "Swimming",
+      "Running"
+    ],
+    "values": {
+      "Soccer": 3,
+      "Swimming": 2,
+      "Running": 3
+    },
+    "question": "Which item has the most?",
+    "answer": "Soccer",
+    "type": "pictographs",
+    "display_type": "pictograph",
+    "subcategory": "pictographs"
+  },
+  {
+    "category": "graphing",
+    "items": [
+      "Cloudy",
+      "Sunny",
+      "Snowy"
+    ],
+    "values": {
+      "Cloudy": 5,
+      "Sunny": 3,
+      "Snowy": 4
+    },
+    "question": "Which item has the most?",
+    "answer": "Cloudy",
+    "type": "pictographs",
+    "display_type": "pictograph",
+    "subcategory": "bar_graphs"
+  },
+  {
+    "category": "graphing",
+    "items": [
+      "Yellow",
+      "Green",
+      "Purple"
+    ],
+    "values": {
+      "Yellow": 2,
+      "Green": 1,
+      "Purple": 1
+    },
+    "question": "Which item has the least?",
+    "answer": "Green",
+    "type": "pictographs",
+    "display_type": "pictograph",
+    "subcategory": "analyzing_data"
+  },
+  {
+    "number": 8,
+    "is_even": true,
+    "question": "Is 8 odd or even?",
+    "answer": "even",
+    "type": "identifying",
+    "display_type": "text",
+    "category": "odd_even",
+    "subcategory": "identifying"
+  },
+  {
+    "number": 16,
+    "is_even": true,
+    "question": "Is 16 odd or even?",
+    "answer": "even",
+    "type": "identifying",
+    "display_type": "text",
+    "category": "odd_even",
+    "subcategory": "sorting"
+  },
+  {
+    "number": 20,
+    "is_even": true,
+    "question": "Is 20 odd or even?",
+    "answer": "even",
+    "type": "identifying",
+    "display_type": "text",
+    "category": "odd_even",
+    "subcategory": "problem_solving"
+  }
+]
