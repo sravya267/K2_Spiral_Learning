@@ -1,133 +1,150 @@
 # pdf_generator.py
 
 import os
-import random
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.graphics import renderPDF
-
-# Import the problem generator
-from problem_generators.problems import generate_problems
 
 
-def generate_worksheet_pdf(output_path, worksheet_type, number_range, concepts, problem_count=None):
-    """Generate a PDF worksheet with problems and visualizations"""
-    
-    # Generate problems using your existing function
-    problems = generate_problems(worksheet_type, number_range, concepts, problem_count)
-    
-    # Create the PDF document
+def _format_problem_text(i, problem):
+    """Format a problem dict into a human-readable string for the worksheet."""
+    # Many generators (word_problems, odd_even, graphing, place_value, etc.) include a pre-built question
+    if "question" in problem:
+        return f"{i + 1}. {problem['question']}"
+
+    category = problem.get("category", "")
+    prob_type = problem.get("type", "")
+
+    if category in ("addition",) or prob_type == "addition":
+        first = problem.get("first_number", "?")
+        second = problem.get("second_number", "?")
+        return f"{i + 1}.  {first}  +  {second}  =  _______"
+
+    if category in ("subtraction",) or prob_type == "subtraction":
+        first = problem.get("first_number", "?")
+        second = problem.get("second_number", "?")
+        return f"{i + 1}.  {first}  -  {second}  =  _______"
+
+    if prob_type == "comparison":
+        first = problem.get("first_number", "?")
+        second = problem.get("second_number", "?")
+        return f"{i + 1}.  {first}  ___  {second}  (use <, >, or =)"
+
+    if prob_type == "ordering":
+        numbers = problem.get("numbers", [])
+        return f"{i + 1}.  Order from least to greatest:  {',  '.join(str(n) for n in numbers)}"
+
+    if prob_type == "before_after":
+        num = problem.get("number", "?")
+        q_type = problem.get("question_type", "before")
+        return f"{i + 1}.  What comes {q_type} {num}?  _______"
+
+    if prob_type == "missing_numbers":
+        sequence = problem.get("sequence", problem.get("numbers", []))
+        seq_str = ",  ".join("___" if n is None else str(n) for n in sequence)
+        return f"{i + 1}.  Fill in the missing number:  {seq_str}"
+
+    # Generic fallback
+    return f"{i + 1}.  _______"
+
+
+def create_worksheet_pdf(problems, worksheet_type, number_range, concepts, output_path, include_answer_key=False):
+    """Generate a PDF worksheet from pre-generated problems.
+
+    Args:
+        problems: List of problem dicts from generate_problems()
+        worksheet_type: "spiral" or "fluency"
+        number_range: "beginner", "intermediate", or "advanced"
+        concepts: List of concept identifiers
+        output_path: File path to write the PDF to
+        include_answer_key: Whether to append an answer key page
+    """
     doc = SimpleDocTemplate(output_path, pagesize=letter)
-    
-    # Get styles
+
     styles = getSampleStyleSheet()
-    
-    # Add a custom title style
+
     title_style = ParagraphStyle(
-        'Title',
-        parent=styles['Title'],
+        "WorksheetTitle",
+        parent=styles["Title"],
         fontSize=24,
         textColor=colors.purple,
+        spaceAfter=16,
     )
-    
-    # Add a custom problem style
+
+    subtitle_style = ParagraphStyle(
+        "WorksheetSubtitle",
+        parent=styles["Normal"],
+        fontSize=11,
+        textColor=colors.grey,
+        spaceAfter=12,
+    )
+
     problem_style = ParagraphStyle(
-        'Problem',
-        parent=styles['Normal'],
+        "Problem",
+        parent=styles["Normal"],
         fontSize=14,
         leading=24,
     )
-    
-    # Elements to add to the PDF
+
+    answer_key_title_style = ParagraphStyle(
+        "AnswerKeyTitle",
+        parent=styles["Title"],
+        fontSize=20,
+        textColor=colors.darkblue,
+        spaceAfter=12,
+    )
+
+    answer_style = ParagraphStyle(
+        "Answer",
+        parent=styles["Normal"],
+        fontSize=12,
+        leading=20,
+    )
+
     elements = []
-    
-    # Add title
-    title = "Math Fun Worksheet!"
-    elements.append(Paragraph(title, title_style))
-    elements.append(Spacer(1, 20))
-    
-    # Add each problem
+
+    # --- Header ---
+    type_label = "Spiral Review" if worksheet_type == "spiral" else "Fluency Sheet"
+    elements.append(Paragraph("Math Fun Worksheet!", title_style))
+    elements.append(Paragraph(f"{type_label}  |  Difficulty: {number_range.capitalize()}", subtitle_style))
+    elements.append(Spacer(1, 10))
+
+    # --- Problems ---
     for i, problem in enumerate(problems):
-        # Get problem details
-        category = problem.get('category', '')
-        
-        # Format problem text based on category
-        if category == 'addition':
-            first_number = problem.get('first_number', 0)
-            second_number = problem.get('second_number', 0)
-            text = f"{i+1}. {first_number} + {second_number} = _______"
-            
-        elif category == 'subtraction':
-            first_number = problem.get('first_number', 0)
-            second_number = problem.get('second_number', 0)
-            text = f"{i+1}. {first_number} - {second_number} = _______"
-            
-        elif category == 'shapes':
-            shape_type = problem.get('subcategory', '')
-            if shape_type == 'basic_2d_3d':
-                text = f"{i+1}. What shape is shown? _______"
-            else:
-                text = f"{i+1}. Count the edges, faces, or vertices: _______"
-                
-        else:
-            text = f"{i+1}. Problem: _______"
-        
+        text = _format_problem_text(i, problem)
         elements.append(Paragraph(text, problem_style))
-        
-        # Try to add visualization if available
+
+        # Optionally embed a visualization (Drawing is a Flowable in ReportLab)
+        category = problem.get("category", "")
         try:
-            # Get the appropriate generator based on category
-            if category == 'addition':
+            generator = None
+            if category == "addition":
                 from problem_generators.addition import AdditionProblemGenerator
                 generator = AdditionProblemGenerator()
-            elif category == 'shapes':
+            elif category == "shapes":
                 from problem_generators.shapes import ShapesProblemGenerator
                 generator = ShapesProblemGenerator()
-            # Add more categories as needed
-            
-            # Generate visualization
-            if generator:
+
+            if generator is not None:
                 drawing = generator.generate_visualization(problem)
-                if drawing:
-                    # Save drawing to temporary file
-                    temp_file = f"temp_{i}.png"
-                    renderPDF.drawToFile(drawing, temp_file, 'PNG')
-                    
-                    # Add image to document
-                    from reportlab.platypus import Image
-                    img = Image(temp_file, width=200, height=150)
-                    elements.append(img)
-                    elements.append(Spacer(1, 10))
+                if drawing is not None:
+                    elements.append(drawing)
+                    elements.append(Spacer(1, 6))
         except Exception as e:
-            print(f"Could not generate visualization for problem {i+1}: {e}")
-        
-        # Add space between problems
+            # Visualization is optional; never let it break PDF generation
+            print(f"Could not generate visualization for problem {i + 1}: {e}")
+
         elements.append(Spacer(1, 20))
-    
-    # Build the PDF
+
+    # --- Answer Key (optional) ---
+    if include_answer_key:
+        elements.append(PageBreak())
+        elements.append(Paragraph("Answer Key", answer_key_title_style))
+        elements.append(Spacer(1, 10))
+        for i, problem in enumerate(problems):
+            answer = problem.get("answer", "—")
+            elements.append(Paragraph(f"{i + 1}.  {answer}", answer_style))
+
     doc.build(elements)
-    
     return output_path
-
-
-# # Example usage
-# if __name__ == "__main__":
-#     # Create addition worksheet
-#     generate_worksheet_pdf(
-#         "math_worksheet.pdf",
-#         "fluency",
-#         "beginner",
-#         ["add_one"],
-#         problem_count=5
-#     )
-    
-#     # Create shapes worksheet
-#     generate_worksheet_pdf(
-#         "shapes_worksheet.pdf",
-#         "fluency",
-#         "beginner",
-#         ["basic_2d_3d"],
-#         problem_count=5
-#     )
