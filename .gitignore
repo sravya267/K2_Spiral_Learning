@@ -28,3 +28,6 @@ Thumbs.db
 # Temp files
 temp_pdfs/
 *.pdf
+
+# Stray artifact from problems.py saving JSON with a relative path
+backend/backend/
