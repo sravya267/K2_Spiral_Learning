@@ -3,6 +3,8 @@ name: Deploy to Cloud Run
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 env:
   PROJECT_ID: proven-airship-284111
@@ -13,8 +15,8 @@ env:
   FRONTEND_IMAGE: gcr.io/proven-airship-284111/k2-spiral-frontend
 
 jobs:
-  deploy:
-    name: Build & Deploy
+  build:
+    name: Build & Test
     runs-on: ubuntu-latest
 
     steps:
@@ -32,12 +34,42 @@ jobs:
       - name: Configure Docker to use gcloud credentials
         run: gcloud auth configure-docker --quiet
 
-      # ── Backend ──────────────────────────────────────────────
       - name: Build backend image
         run: docker build -t $BACKEND_IMAGE ./backend
 
-      - name: Push backend image
-        run: docker push $BACKEND_IMAGE
+      - name: Build frontend image
+        run: |
+          docker build \
+            --build-arg REACT_APP_API_URL=https://placeholder.run.app \
+            -t $FRONTEND_IMAGE \
+            ./frontend
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker to use gcloud credentials
+        run: gcloud auth configure-docker --quiet
+
+      # ── Backend ──────────────────────────────────────────────
+      - name: Build and push backend image
+        run: |
+          docker build -t $BACKEND_IMAGE ./backend
+          docker push $BACKEND_IMAGE
 
       - name: Deploy backend to Cloud Run
         run: |
@@ -61,15 +93,13 @@ jobs:
           echo "Backend URL: $URL"
 
       # ── Frontend ─────────────────────────────────────────────
-      - name: Build frontend image
+      - name: Build and push frontend image
         run: |
           docker build \
             --build-arg REACT_APP_API_URL=${{ steps.backend.outputs.url }} \
             -t $FRONTEND_IMAGE \
             ./frontend
-
-      - name: Push frontend image
-        run: docker push $FRONTEND_IMAGE
+          docker push $FRONTEND_IMAGE
 
       - name: Deploy frontend to Cloud Run
         run: |
