@@ -4,8 +4,8 @@ import { fetchConcepts } from '../services/api'; // Import from API service
 
 const ConceptSelector = ({ selectedConcepts, setSelectedConcepts, worksheetType }) => {
   const [concepts, setConcepts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [apiStatus, setApiStatus] = useState('loading');
+  const [loading, setLoading] = useState(false);   // show instantly — allConcepts is always ready
+  const [apiStatus, setApiStatus] = useState('fallback');
 
   // Predefined list of all concepts
   const allConcepts = [
