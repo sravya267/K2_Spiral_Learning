@@ -12,48 +12,29 @@ from reportlab.platypus import (
     Paragraph, Spacer, Table, TableStyle, HRFlowable, PageBreak,
 )
 
-# ── Global colors ─────────────────────────────────────────────────────────────
+# ── Colors ────────────────────────────────────────────────────────────────────
+BLACK    = colors.black
 DARK_GRAY = colors.HexColor('#333333')
-MID_GRAY  = colors.HexColor('#777777')
-BORDER    = colors.HexColor('#CCCCCC')
+MID_GRAY  = colors.HexColor('#666666')
 WHITE     = colors.white
-TITLE_CLR = colors.HexColor('#4A148C')   # deep purple for title / HR
-
-# Per-category: (header_bg, body_bg)
-# Each section gets its own color so the sheet looks fun and easy to navigate
-CAT_COLORS = {
-    'addition':       (colors.HexColor('#C62828'), colors.HexColor('#FFF8F8')),
-    'subtraction':    (colors.HexColor('#1565C0'), colors.HexColor('#F0F4FF')),
-    'number_sense':   (colors.HexColor('#6A1B9A'), colors.HexColor('#F9F0FF')),
-    'skip_counting':  (colors.HexColor('#00695C'), colors.HexColor('#F0FFFB')),
-    'place_value':    (colors.HexColor('#E65100'), colors.HexColor('#FFF8F0')),
-    'time_telling':   (colors.HexColor('#880E4F'), colors.HexColor('#FFF0F6')),
-    'money_counting': (colors.HexColor('#1B5E20'), colors.HexColor('#F1FFF4')),
-    'word_problems':  (colors.HexColor('#311B92'), colors.HexColor('#F4F0FF')),
-    'shapes':         (colors.HexColor('#01579B'), colors.HexColor('#F0F8FF')),
-    'fractions':      (colors.HexColor('#BF360C'), colors.HexColor('#FFF5F0')),
-    'measurement':    (colors.HexColor('#004D40'), colors.HexColor('#F0FFFD')),
-    'patterns':       (colors.HexColor('#4A148C'), colors.HexColor('#FAF0FF')),
-    'graphing':       (colors.HexColor('#0D47A1'), colors.HexColor('#EFF5FF')),
-    'odd_even':       (colors.HexColor('#33691E'), colors.HexColor('#F6FFF0')),
-    'general':        (colors.HexColor('#37474F'), colors.HexColor('#F5F5F5')),
-}
+TITLE_CLR = colors.HexColor('#1A237E')   # deep navy for page title
 
 CATEGORY_NAMES = {
-    'addition':       'Addition',
-    'subtraction':    'Subtraction',
-    'number_sense':   'Number Sense',
-    'skip_counting':  'Skip Counting',
-    'place_value':    'Place Value',
-    'time_telling':   'Time Telling',
-    'money_counting': 'Money',
-    'word_problems':  'Word Problems',
-    'shapes':         'Shapes',
-    'fractions':      'Fractions',
-    'measurement':    'Measurement',
-    'patterns':       'Patterns & Algebra',
-    'graphing':       'Graphing & Data',
-    'odd_even':       'Odd & Even',
+    'addition':       'Add.',
+    'subtraction':    'Subtract.',
+    'number_sense':   'Number Sense.',
+    'skip_counting':  'Skip count.',
+    'place_value':    'Place Value.',
+    'time_telling':   'Write the time.',
+    'money_counting': 'Count the money.',
+    'word_problems':  'Solve the word problem.',
+    'shapes':         'Shapes.',
+    'fractions':      'Fractions.',
+    'measurement':    'Measurement.',
+    'patterns':       'Find the pattern.',
+    'graphing':       'Data & Graphing.',
+    'odd_even':       'Odd or Even?',
+    'general':        'Solve.',
 }
 
 
@@ -67,12 +48,10 @@ def _e(text):
 def _vertical_math(op_char, n1_str, n2_str, styles):
     """Return a Table Flowable for a vertical math problem.
 
-    Uses a LINEABOVE on the answer row so we never need unicode bar chars
-    (which are not available in standard Courier encoding).
+    Numbers are large and bold; the answer bar is a drawn LINEABOVE
+    (avoids unicode bar characters that Courier can't encode).
     """
     w = max(len(n1_str), len(n2_str))
-    # Right-justify both lines to the same width.
-    # Replace spaces with &nbsp; so Paragraph preserves them.
     raw1 = n1_str.rjust(w + 1)
     raw2 = op_char + n2_str.rjust(w)
 
@@ -80,44 +59,43 @@ def _vertical_math(op_char, n1_str, n2_str, styles):
         escaped = xml_escape(s).replace(' ', '&nbsp;')
         return Paragraph(escaped, styles['math'])
 
-    char_pt = 9.6   # Courier-Bold at 16 pt ≈ 9.6 pt/char
+    char_pt = 12.5   # Courier-Bold at 20 pt ≈ 12.5 pt/char
     cell_w  = (w + 3) * char_pt
 
     tbl = Table(
         [[_p(raw1)],
          [_p(raw2)],
-         [Spacer(1, 14)]],   # blank row below the drawn bar = answer space
+         [Spacer(1, 18)]],   # space below bar = answer area
         colWidths=[cell_w],
     )
     tbl.setStyle(TableStyle([
-        ('TOPPADDING',    (0, 0), (-1, -1), 1),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 1),
+        ('TOPPADDING',    (0, 0), (-1, -1), 2),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
         ('LEFTPADDING',   (0, 0), (-1, -1), 0),
         ('RIGHTPADDING',  (0, 0), (-1, -1), 0),
-        ('LINEABOVE',     (0, 2), (-1, 2), 1.5, DARK_GRAY),
-        ('BOTTOMPADDING', (0, 2), (-1, 2), 8),
+        ('LINEABOVE',     (0, 2), (-1, 2), 2, BLACK),
+        ('BOTTOMPADDING', (0, 2), (-1, 2), 10),
     ]))
     return tbl
 
 
 def _format_problem(problem, num, styles):
-    """Return a list of Flowables for one problem inside a section box."""
+    """Return a list of Flowables for one problem."""
     prob_type = problem.get('type', '')
     category  = problem.get('category', '')
 
-    # ── Vertical math (addition / subtraction) ────────────────────────────────
+    # ── Vertical math ─────────────────────────────────────────────────────────
     if category in ('addition', 'subtraction') or prob_type in ('addition', 'subtraction'):
-        # Use plain ASCII +/- so Courier can encode them without issues
-        op  = '+' if (category == 'addition' or prob_type == 'addition') else '-'
-        n1  = str(problem.get('first_number',  '?'))
-        n2  = str(problem.get('second_number', '?'))
+        op = '+' if (category == 'addition' or prob_type == 'addition') else '-'
+        n1 = str(problem.get('first_number',  '?'))
+        n2 = str(problem.get('second_number', '?'))
         return [_vertical_math(op, n1, n2, styles), Spacer(1, 4)]
 
     # ── Pre-built question fields ─────────────────────────────────────────────
     if 'text' in problem:        # word_problems
         return [
             Paragraph(_e(problem['text']), styles['q']),
-            Spacer(1, 4),
+            Spacer(1, 6),
             Paragraph('Answer: _______________________________', styles['ans']),
         ]
     if 'question' in problem:
@@ -131,7 +109,7 @@ def _format_problem(problem, num, styles):
         return [Paragraph(
             f'{num}.&nbsp;&nbsp;'
             f'<b>{_e(problem.get("first_number","?"))}</b>'
-            f'&nbsp;&nbsp;( )&nbsp;&nbsp;'
+            f'&nbsp;&nbsp;[ ]&nbsp;&nbsp;'
             f'<b>{_e(problem.get("second_number","?"))}</b>'
             f'&nbsp;&nbsp;<font size="9" color="grey">(write &lt;, &gt;, or =)</font>',
             styles['q'])]
@@ -141,7 +119,7 @@ def _format_problem(problem, num, styles):
         return [
             Paragraph(f'{num}. Order from least to greatest:', styles['q']),
             Paragraph(f'&nbsp;&nbsp;&nbsp;&nbsp;{nums}', styles['q']),
-            Paragraph('Answer: _______________', styles['ans']),
+            Paragraph('___________________________', styles['ans']),
         ]
 
     if prob_type == 'before_after':
@@ -150,7 +128,7 @@ def _format_problem(problem, num, styles):
                 f'{num}. What comes <b>{_e(problem.get("question_type","before"))}</b>'
                 f' {_e(problem.get("number","?"))}?',
                 styles['q']),
-            Paragraph('Answer: _______', styles['ans']),
+            Paragraph('_______', styles['ans']),
         ]
 
     if prob_type == 'missing_numbers':
@@ -173,7 +151,7 @@ def _format_problem(problem, num, styles):
             Paragraph(
                 f'&nbsp;&nbsp;&nbsp;&nbsp;Number: <b>{_e(problem.get("number",""))}</b>',
                 styles['q']),
-            Paragraph('Answer: _______', styles['ans']),
+            Paragraph('_______', styles['ans']),
         ]
 
     # ── Time telling ──────────────────────────────────────────────────────────
@@ -181,20 +159,21 @@ def _format_problem(problem, num, styles):
         h = problem.get('hour', 0)
         m = problem.get('minute', 0)
         return [
-            Paragraph(f'{num}. Draw clock hands to show <b>{h}:{m:02d}</b>', styles['q']),
-            Spacer(1, 30),
+            Paragraph(f'{num}. What time does the clock show?', styles['q']),
+            Paragraph(f'The clock shows <b>{h}:{m:02d}</b>', styles['q']),
+            Paragraph('_______', styles['ans']),
         ]
 
     # ── Money ─────────────────────────────────────────────────────────────────
     if prob_type == 'identifying_coins':
         return [
             Paragraph(f'{num}. What coin is this?', styles['q']),
-            Paragraph('Answer: _______', styles['ans']),
+            Paragraph('_______', styles['ans']),
         ]
     if prob_type == 'counting_pennies_nickels':
         return [Paragraph(
             f'{num}. Count the {_e(problem.get("coin_type",""))}s:<br/>'
-            f'&nbsp;&nbsp;&nbsp;&nbsp;{_e(problem.get("count",""))} coins = ______ cents',
+            f'&nbsp;&nbsp;{_e(problem.get("count",""))} coins = ______ cents',
             styles['q'])]
     if prob_type == 'mixed_coins':
         coins = ', '.join(problem.get('coins', []))
@@ -211,18 +190,18 @@ def _format_problem(problem, num, styles):
     # ── Fractions ─────────────────────────────────────────────────────────────
     if prob_type in ('halves_wholes', 'thirds_fourths'):
         return [
-            Paragraph(f'{num}. What fraction is shaded?', styles['q']),
             Paragraph(
-                f'({_e(problem.get("shaded_parts",""))}'
-                f' of {_e(problem.get("total_parts",""))} parts)',
-                styles['ans']),
-            Paragraph('Answer: _______', styles['ans']),
+                f'{num}. What fraction is shaded?<br/>'
+                f'({_e(problem.get("shaded_parts",""))} of'
+                f' {_e(problem.get("total_parts",""))} parts)',
+                styles['q']),
+            Paragraph('_______', styles['ans']),
         ]
     if prob_type == 'comparing_fractions':
         return [Paragraph(
             f'{num}.&nbsp;&nbsp;'
             f'<b>{_e(problem.get("fraction1",""))}</b>'
-            f'&nbsp;&nbsp;( )&nbsp;&nbsp;'
+            f'&nbsp;&nbsp;[ ]&nbsp;&nbsp;'
             f'<b>{_e(problem.get("fraction2",""))}</b>'
             f'&nbsp;&nbsp;<font size="9" color="grey">(write &lt;, &gt;, or =)</font>',
             styles['q'])]
@@ -231,13 +210,12 @@ def _format_problem(problem, num, styles):
     if prob_type == 'comparing_objects':
         return [
             Paragraph(
-                f'{num}. Which is {_e(problem.get("property",""))}er?', styles['q']),
-            Paragraph(
+                f'{num}. Which is {_e(problem.get("property",""))}er?<br/>'
                 f'{_e(problem.get("object1",""))}'
                 f'&nbsp;&nbsp;or&nbsp;&nbsp;'
                 f'{_e(problem.get("object2",""))}',
                 styles['q']),
-            Paragraph('Answer: _______', styles['ans']),
+            Paragraph('_______', styles['ans']),
         ]
     if prob_type == 'non_standard_units':
         return [Paragraph(
@@ -260,14 +238,14 @@ def _format_problem(problem, num, styles):
     if prob_type == 'creating_patterns':
         seq = problem.get('pattern', [])
         fmt = ',&nbsp;&nbsp;'.join('______' if n is None else str(n) for n in seq)
-        return [Paragraph(f'{num}. Fill in missing numbers:<br/>&nbsp;&nbsp;{fmt}', styles['q'])]
+        return [Paragraph(f'{num}. Fill in:<br/>&nbsp;&nbsp;{fmt}', styles['q'])]
 
     # ── Shapes ────────────────────────────────────────────────────────────────
     if prob_type == 'basic_2d_3d':
         kind = '2D' if problem.get('shape_type') == '2d' else '3D'
         return [
             Paragraph(f'{num}. Name this {kind} shape:', styles['q']),
-            Paragraph('Answer: _______', styles['ans']),
+            Paragraph('_______', styles['ans']),
         ]
     if prob_type == 'edges_faces_vertices':
         return [
@@ -275,7 +253,7 @@ def _format_problem(problem, num, styles):
                 f'{num}. How many <b>{_e(problem.get("question_type",""))}</b>'
                 f' does a {_e(problem.get("shape_name",""))} have?',
                 styles['q']),
-            Paragraph('Answer: _______', styles['ans']),
+            Paragraph('_______', styles['ans']),
         ]
 
     # ── Fallback ──────────────────────────────────────────────────────────────
@@ -283,39 +261,27 @@ def _format_problem(problem, num, styles):
 
 
 def _make_section(category, problems, col_w, styles):
-    """Build one category section as a two-row Table: colored header + problem body."""
-    display = CATEGORY_NAMES.get(category, category.replace('_', ' ').title())
-    hdr_clr, body_clr = CAT_COLORS.get(category, CAT_COLORS['general'])
+    """Build one section box: small instruction label + problems, black border."""
+    label = CATEGORY_NAMES.get(category, category.replace('_', ' ').title() + '.')
 
-    header = Paragraph(display, styles['sec_head'])
-
-    inner = []
+    inner = [Paragraph(label, styles['sec_label']), Spacer(1, 6)]
     for i, prob in enumerate(problems):
         inner.extend(_format_problem(prob, i + 1, styles))
-        inner.append(Spacer(1, 5))
+        inner.append(Spacer(1, 6))
 
     section = Table(
-        [[header], [inner]],
+        [[inner]],
         colWidths=[col_w],
-        spaceBefore=4, spaceAfter=4,
+        spaceBefore=0, spaceAfter=0,
     )
     section.setStyle(TableStyle([
-        # header row
-        ('BACKGROUND',    (0, 0), (-1, 0), hdr_clr),
-        ('TEXTCOLOR',     (0, 0), (-1, 0), WHITE),
-        ('TOPPADDING',    (0, 0), (-1, 0), 7),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 7),
-        ('LEFTPADDING',   (0, 0), (-1, 0), 10),
-        ('RIGHTPADDING',  (0, 0), (-1, 0), 10),
-        # body row
-        ('BACKGROUND',    (0, 1), (-1, 1), body_clr),
-        ('TOPPADDING',    (0, 1), (-1, 1), 8),
-        ('BOTTOMPADDING', (0, 1), (-1, 1), 8),
-        ('LEFTPADDING',   (0, 1), (-1, 1), 10),
-        ('RIGHTPADDING',  (0, 1), (-1, 1), 10),
+        ('BACKGROUND', (0, 0), (-1, -1), WHITE),
+        ('TOPPADDING',    (0, 0), (-1, -1), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('LEFTPADDING',   (0, 0), (-1, -1), 10),
+        ('RIGHTPADDING',  (0, 0), (-1, -1), 10),
         ('VALIGN',        (0, 0), (-1, -1), 'TOP'),
-        # border
-        ('BOX',           (0, 0), (-1, -1), 1.2, BORDER),
+        ('BOX',           (0, 0), (-1, -1), 1.5, BLACK),
     ]))
     return section
 
@@ -324,13 +290,11 @@ def _make_section(category, problems, col_w, styles):
 
 def _draw_page_border(canvas, doc):
     canvas.saveState()
-    m = 0.3 * inch
+    m = 0.35 * inch
     w, h = letter
-    canvas.setStrokeColor(BORDER)
-    canvas.setLineWidth(1.5)
+    canvas.setStrokeColor(BLACK)
+    canvas.setLineWidth(2)
     canvas.rect(m, m, w - 2 * m, h - 2 * m)
-    canvas.setLineWidth(0.5)
-    canvas.rect(m + 4, m + 4, w - 2 * m - 8, h - 2 * m - 8)
     canvas.restoreState()
 
 
@@ -338,9 +302,9 @@ def _draw_page_border(canvas, doc):
 
 def create_worksheet_pdf(problems, worksheet_type, number_range, concepts,
                          output_path, include_answer_key=False):
-    """Generate a K-2 spiral review worksheet with colorful category section boxes."""
+    """Generate a K-2 spiral review worksheet."""
 
-    MARGIN    = 0.55 * inch
+    MARGIN    = 0.5 * inch
     PAGE_W, PAGE_H = letter
     content_w = PAGE_W - 2 * MARGIN
 
@@ -366,31 +330,34 @@ def create_worksheet_pdf(problems, worksheet_type, number_range, concepts,
         return p
 
     styles = {
-        'title':    S('title',    fontName='Helvetica-Bold',  fontSize=18,
-                       textColor=TITLE_CLR, alignment=TA_CENTER, spaceAfter=4),
-        'name':     S('name',     fontName='Helvetica',       fontSize=12,
-                       textColor=DARK_GRAY),
-        'sec_head': S('sec_head', fontName='Helvetica-Bold',  fontSize=13,
-                       textColor=WHITE, alignment=TA_CENTER),
-        # Main question text — slightly larger and well-leaded for young readers
-        'q':        S('q',        fontName='Helvetica',       fontSize=13,
-                       textColor=DARK_GRAY, leading=21, spaceAfter=2),
-        # Vertical math — Courier-Bold so digits line up cleanly
-        'math':     S('math',     fontName='Courier-Bold',    fontSize=16,
-                       textColor=DARK_GRAY, leading=22, alignment=TA_LEFT),
-        # Smaller grey hint text under questions
-        'ans':      S('ans',      fontName='Helvetica',       fontSize=10,
-                       textColor=MID_GRAY, spaceAfter=2),
+        # Page title
+        'title':     S('title',     fontName='Helvetica-Bold', fontSize=16,
+                        textColor=TITLE_CLR, alignment=TA_CENTER, spaceAfter=2),
+        # Name / date line
+        'name':      S('name',      fontName='Helvetica', fontSize=12,
+                        textColor=DARK_GRAY),
+        # Small instruction text at the top of each box  (e.g. "Add.")
+        'sec_label': S('sec_label', fontName='Helvetica-Bold', fontSize=11,
+                        textColor=DARK_GRAY, spaceAfter=2),
+        # Regular question text
+        'q':         S('q',         fontName='Helvetica', fontSize=13,
+                        textColor=DARK_GRAY, leading=21, spaceAfter=2),
+        # Large bold Courier for vertical math — matches the reference image look
+        'math':      S('math',      fontName='Courier-Bold', fontSize=20,
+                        textColor=DARK_GRAY, leading=26, alignment=TA_LEFT),
+        # Small grey answer line hints
+        'ans':       S('ans',       fontName='Helvetica', fontSize=10,
+                        textColor=MID_GRAY, spaceAfter=2),
         # Answer key page
-        'ak_head':  S('ak_head',  fontName='Helvetica-Bold',  fontSize=16,
-                       textColor=TITLE_CLR, alignment=TA_CENTER, spaceAfter=8),
-        'ak_item':  S('ak_item',  fontName='Helvetica',       fontSize=12,
-                       textColor=DARK_GRAY, leading=22),
+        'ak_head':   S('ak_head',   fontName='Helvetica-Bold', fontSize=16,
+                        textColor=TITLE_CLR, alignment=TA_CENTER, spaceAfter=8),
+        'ak_item':   S('ak_item',   fontName='Helvetica', fontSize=12,
+                        textColor=DARK_GRAY, leading=22),
     }
 
     elements = []
 
-    # ── Page title & name line ────────────────────────────────────────────────
+    # ── Page title & header ───────────────────────────────────────────────────
     type_label = 'Spiral Review' if worksheet_type == 'spiral' else 'Fluency Practice'
     elements.append(Paragraph(
         f'Math {type_label}  \u2014  {number_range.capitalize()}',
@@ -410,7 +377,7 @@ def create_worksheet_pdf(problems, worksheet_type, number_range, concepts,
     ]))
     elements.append(info)
     elements.append(HRFlowable(
-        width='100%', thickness=2, color=TITLE_CLR, spaceAfter=8))
+        width='100%', thickness=1.5, color=DARK_GRAY, spaceAfter=6))
 
     # ── Group problems by category ────────────────────────────────────────────
     seen = {}
@@ -418,7 +385,7 @@ def create_worksheet_pdf(problems, worksheet_type, number_range, concepts,
         cat = p.get('category', 'general')
         seen.setdefault(cat, []).append(p)
 
-    col_w = (content_w - 8) / 2
+    col_w = (content_w - 4) / 2   # 4 pt gap between columns
 
     sections = [_make_section(cat, probs, col_w, styles)
                 for cat, probs in seen.items()]
@@ -433,10 +400,10 @@ def create_worksheet_pdf(problems, worksheet_type, number_range, concepts,
         grid = Table(rows, colWidths=[col_w, col_w], spaceAfter=0)
         grid.setStyle(TableStyle([
             ('VALIGN',        (0, 0), (-1, -1), 'TOP'),
-            ('TOPPADDING',    (0, 0), (-1, -1), 0),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-            ('LEFTPADDING',   (0, 0), (-1, -1), 4),
-            ('RIGHTPADDING',  (0, 0), (-1, -1), 4),
+            ('TOPPADDING',    (0, 0), (-1, -1), 2),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+            ('LEFTPADDING',   (0, 0), (-1, -1), 2),
+            ('RIGHTPADDING',  (0, 0), (-1, -1), 2),
         ]))
         elements.append(grid)
 
@@ -445,7 +412,7 @@ def create_worksheet_pdf(problems, worksheet_type, number_range, concepts,
         elements.append(PageBreak())
         elements.append(Paragraph('Answer Key', styles['ak_head']))
         elements.append(HRFlowable(
-            width='100%', thickness=2, color=TITLE_CLR, spaceAfter=10))
+            width='100%', thickness=1.5, color=DARK_GRAY, spaceAfter=10))
 
         em_dash = '\u2014'
         ak_cells = [
@@ -465,7 +432,7 @@ def create_worksheet_pdf(problems, worksheet_type, number_range, concepts,
             ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
             ('LEFTPADDING',   (0, 0), (-1, -1), 6),
             ('RIGHTPADDING',  (0, 0), (-1, -1), 6),
-            ('LINEBELOW',     (0, 0), (-1, -2), 0.5, colors.HexColor('#EEEEEE')),
+            ('LINEBELOW',     (0, 0), (-1, -2), 0.5, colors.HexColor('#DDDDDD')),
         ]))
         elements.append(ak_table)
 
